@@ -12,8 +12,14 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import app.main.R;
+import app.main.database.Repository;
+import app.main.entities.Part;
+import app.main.entities.Product;
 
 public class ProductList extends AppCompatActivity {
+
+
+    private Repository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +48,23 @@ public class ProductList extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == R.id.mysample) {
-            Toast.makeText(ProductList.this, "put in sample data", Toast.LENGTH_LONG).show();
+
+            repository = new Repository(getApplication());
+
+//            Toast.makeText(ProductList.this, "put in sample data", Toast.LENGTH_LONG).show();
+            Product product = new Product(0, "Miami", 100.0);
+            repository.insert(product);
+
+            product = new Product(0, "Maine", 100.0);
+            repository.insert(product);
+
+            Part part = new Part(0, "Boat Ride", 100.0, 1);
+            repository.insert(part);
+
+            part = new Part(0, "Snow-sledding", 100.0, 1);
+            repository.insert(part);
+
+
             return true;
         }
         if (item.getItemId() == android.R.id.home) {

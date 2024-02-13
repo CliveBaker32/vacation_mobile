@@ -1,5 +1,6 @@
 package app.main.dao;
 
+import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -10,6 +11,7 @@ import java.util.List;
 
 import app.main.entities.Product;
 
+@Dao
 public interface ProductDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Product product);

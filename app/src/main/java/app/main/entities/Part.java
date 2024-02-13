@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 public class Part {
 
     @PrimaryKey(autoGenerate = true)
-    private int PartID;
+    private int partID;
 
     private String partName;
 
@@ -16,18 +16,18 @@ public class Part {
     private int productID;
 
     public Part(int partID, String partName, double price, int productID) {
-        PartID = partID;
+        this.partID = partID;
         this.partName = partName;
         this.price = price;
         this.productID = productID;
     }
 
     public int getPartID() {
-        return PartID;
+        return partID;
     }
 
     public void setPartID(int partID) {
-        PartID = partID;
+        this.partID = partID;
     }
 
     public String getPartName() {
