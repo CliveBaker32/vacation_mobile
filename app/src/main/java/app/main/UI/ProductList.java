@@ -1,6 +1,8 @@
 package app.main.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +12,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.List;
 
 import app.main.R;
 import app.main.database.Repository;
@@ -35,7 +39,15 @@ public class ProductList extends AppCompatActivity {
             }
         });
 
-        System.out.println(getIntent().getStringExtra("test"));
+        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        repository = new Repository(getApplication());
+        List<Product> allProducts = repository.getmAllProducts();
+        final ProductAdapter productAdapter = new ProductAdapter(this);
+        recyclerView.setAdapter(productAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        productAdapter.setProducts(allProducts);
+
+
     }
 
     @Override

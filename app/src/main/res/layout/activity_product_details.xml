@@ -17,6 +17,7 @@
         app:srcCompat="@drawable/baseline_add_24" />
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="409dp"
         android:layout_height="200dp"
         android:background="#00BCD4"
@@ -35,34 +36,44 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    android:text="first" />
+                    android:text="Title: " />
 
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    android:text="second" />
+                    android:hint="Bermuda" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:text="Price: " />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:text="third" />
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:hint="0.0" />
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:text="fourth" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:text="fifth" />
 
 
         </LinearLayout>
 
 
     </ScrollView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/partrecyclerview"
+        android:layout_width="413dp"
+        android:layout_height="474dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="201dp"
+        app:layout_constraintTop_toBottomOf="@id/scrollView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

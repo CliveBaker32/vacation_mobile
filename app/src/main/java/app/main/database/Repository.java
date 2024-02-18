@@ -26,7 +26,7 @@ public class Repository {
         mPartDAO=db.partDAO();
         mProductDAO=db.productDAO();
     }
-    public List<Product>getAllProducts(){
+    public List<Product>getmAllProducts(){
         databaseExecutor.execute(()->{
             mAllProducts=mProductDAO.getAllProducts();
         });
