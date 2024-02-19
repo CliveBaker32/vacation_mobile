@@ -6,7 +6,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -16,15 +20,35 @@ import java.util.List;
 import app.main.R;
 import app.main.database.Repository;
 import app.main.entities.Part;
+import app.main.entities.Product;
 
 public class ProductDetails extends AppCompatActivity {
+    String name;
+    double price;
+    int productID;
+    EditText editName;
+    EditText editPrice;
+
     Repository repository;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
         FloatingActionButton fab = findViewById(R.id.floatingActionButton2);
+
+        editName = findViewById(R.id.titletext);
+        editPrice = findViewById(R.id.pricetext);
+
+        name = getIntent().getStringExtra("name");
+        price = getIntent().getDoubleExtra("price", 0.0);
+
+        editName.setText(name);
+        editPrice.setText(Double.toString(price));
+
+        //productID = getIntent().getIntExtra("id", -1);
+
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +66,36 @@ public class ProductDetails extends AppCompatActivity {
 
         partAdapter.setParts(repository.getAllParts());
 
-
     }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_productdetails, menu);
+        return true;
+    }
+
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.productsave) {
+            Product product;
+            if (productID == -1) {
+                if (repository.getmAllProducts().size() == 0) productID = 1;
+                else
+                    productID = repository.getmAllProducts().get(repository.getmAllProducts().size() - 1).getProductID() + 1;
+                product = new Product(productID, editName.getText().toString(), Double.parseDouble(editPrice.getText().toString()));
+                repository.insert(product);
+                this.finish();
+            } else {
+                product = new Product(productID, editName.getText().toString(), Double.parseDouble(editPrice.getText().toString()));
+                repository.update(product);
+                this.finish();
+            }
+
+        }
+
+
+        return true;
+    }
+
+
 }
