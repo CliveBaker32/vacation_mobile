@@ -47,7 +47,7 @@ public class ProductDetails extends AppCompatActivity {
         editName.setText(name);
         editPrice.setText(Double.toString(price));
 
-        //productID = getIntent().getIntExtra("id", -1);
+        productID = getIntent().getIntExtra("id", -1);
 
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +64,7 @@ public class ProductDetails extends AppCompatActivity {
         recyclerView.setAdapter(partAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        partAdapter.setParts(repository.getAllParts());
+        partAdapter.setParts(repository.getAllAssociatedParts(productID));
 
     }
 
@@ -76,7 +76,7 @@ public class ProductDetails extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (item.getItemId() == R.id.productsave) {
+        if(item.getItemId()== R.id.productsave) {
             Product product;
             if (productID == -1) {
                 if (repository.getmAllProducts().size() == 0) productID = 1;
@@ -86,16 +86,15 @@ public class ProductDetails extends AppCompatActivity {
                 repository.insert(product);
                 this.finish();
             } else {
-                product = new Product(productID, editName.getText().toString(), Double.parseDouble(editPrice.getText().toString()));
-                repository.update(product);
-                this.finish();
+                try {
+                    product = new Product(productID, editName.getText().toString(), Double.parseDouble(editPrice.getText().toString()));
+                    repository.update(product);
+                    this.finish();
+                } catch (Exception e) {
+
+                }
             }
-
         }
-
-
         return true;
     }
-
-
 }

@@ -89,4 +89,19 @@ public class ProductList extends AppCompatActivity {
         }
         return true;
     }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+        List<Product> allProducts = repository.getmAllProducts();
+        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        final ProductAdapter productAdapter = new ProductAdapter(this);
+        recyclerView.setAdapter(productAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        productAdapter.setProducts(allProducts);
+
+        Toast.makeText(this,"Vacation list is refreshed. ProductList.java - onResume Method",Toast.LENGTH_LONG).show();
+    }
+
 }
