@@ -165,7 +165,8 @@ public class PartDetails extends AppCompatActivity {
                 intent.putExtra("key", "Starting Excursion");
                 PendingIntent sender = PendingIntent.getBroadcast(PartDetails.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);}
+                alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
+            }
             catch (Exception e){
 
             }

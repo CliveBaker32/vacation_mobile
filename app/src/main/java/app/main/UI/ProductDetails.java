@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,8 +17,12 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import app.main.R;
 import app.main.database.Repository;
@@ -33,6 +40,8 @@ public class ProductDetails extends AppCompatActivity {
     EditText editHotel;
     EditText editStartDate;
     EditText editEndDate;
+    private static final Object lock = new Object();
+
 
 
     @Override
@@ -92,6 +101,34 @@ public class ProductDetails extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if(item.getItemId()== R.id.productsave) {
+
+            // Check for correct date format and if end date is after the start date before saving anything.
+            String myFormat = "MM/dd/yy"; //In which you need put here
+            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+            try {
+                // Parse the editEndDate and editStartDate strings using the specified format
+                sdf.setLenient(false); // Ensure strict parsing
+                Date endDate = sdf.parse(editEndDate.getText().toString());
+                Date startDate = sdf.parse(editStartDate.getText().toString());
+
+                // Format the parsed dates back to strings to check if they match the original input
+                String formattedEndDate = sdf.format(endDate);
+                String formattedStartDate = sdf.format(startDate);
+
+                // Check if the formatted dates match the original input
+                if (!formattedEndDate.equals(editEndDate.getText().toString()) || !formattedStartDate.equals(editStartDate.getText().toString())) {
+                    // Dates do not match the expected format
+                    // Show error message
+                    Toast.makeText(this, "Dates should be in the format MM/dd/yy.", Toast.LENGTH_SHORT).show();
+                    return true; // Exit the method without further processing
+                } else if (startDate.after(endDate)) {
+                    Toast.makeText(this, "End date should be after start date.", Toast.LENGTH_SHORT).show();
+                    return true; // Exit the method without further processing
+                }
+            } catch (Exception e) {
+
+            }
+            // Now create the product or update it.
             Product product;
             if (productID == -1) {
                 if (repository.getmAllProducts().size() == 0) productID = 1;
@@ -129,6 +166,85 @@ public class ProductDetails extends AppCompatActivity {
             return true;
         }
 
+
+        if(item.getItemId()== R.id.setAlert) {
+
+            String myFormat = "MM/dd/yy"; //In which you need put here
+            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+            // Check if format is valid and end dat is after start date.
+            try {
+                // Parse the editEndDate and editStartDate strings using the specified format
+                sdf.setLenient(false); // Ensure strict parsing
+                Date endDate = sdf.parse(editEndDate.getText().toString());
+                Date startDate = sdf.parse(editStartDate.getText().toString());
+
+                // Format the parsed dates back to strings to check if they match the original input
+                String formattedEndDate = sdf.format(endDate);
+                String formattedStartDate = sdf.format(startDate);
+
+                // Check if the formatted dates match the original input
+                if (!formattedEndDate.equals(editEndDate.getText().toString()) || !formattedStartDate.equals(editStartDate.getText().toString())) {
+                    // Dates do not match the expected format
+                    // Show error message
+                    Toast.makeText(this, "Dates should be in the format MM/dd/yy.", Toast.LENGTH_SHORT).show();
+                    return true; // Exit the method without further processing
+                } else if (startDate.after(endDate)) {
+                    Toast.makeText(this, "End date should be after start date.", Toast.LENGTH_SHORT).show();
+                    return true; // Exit the method without further processing
+                }
+            } catch (Exception e) {
+                return true; // Exit the method without further processing if, a en error occurs.
+            }
+
+
+
+
+            String startDateFromScreen = editStartDate.getText().toString();
+            String endDateFromScreen = editEndDate.getText().toString();
+            Date myStartDate = null;
+            Date myEndDate = null;
+
+
+            try {
+                myStartDate = sdf.parse(startDateFromScreen);
+                myEndDate = sdf.parse(endDateFromScreen);
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            // Define an object to use as a lock
+
+// Then in your method:
+            try {
+                // Synchronize on the lock object to ensure only one thread can execute this block at a time
+                synchronized (lock) {
+                    // Your code to set the first alarm
+                    Long trigger = myStartDate.getTime();
+                    Intent intent = new Intent(ProductDetails.this, MyReceiver.class);
+                    intent.setAction("START_DATE");
+                    intent.putExtra("key", editName.getText().toString() + " - starting");
+                    PendingIntent sender = PendingIntent.getBroadcast(ProductDetails.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
+
+                    // Sleep for a short period to allow the first alarm to be set
+                    Thread.sleep(1000); // You can adjust the duration as needed
+
+                    // Your code to set the second alarm
+                    Long trigger2 = myEndDate.getTime();
+                    Intent intent2 = new Intent(ProductDetails.this, MyReceiver.class);
+                    intent2.setAction("END_DATE");
+                    intent2.putExtra("key", editName.getText().toString() + " - ending");
+                    PendingIntent sender2 = PendingIntent.getBroadcast(ProductDetails.this, ++MainActivity.numAlert, intent2, PendingIntent.FLAG_IMMUTABLE);
+                    AlarmManager alarmManager2 = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    alarmManager2.set(AlarmManager.RTC_WAKEUP, trigger2, sender2);
+                }
+            } catch (Exception e) {
+                return true;
+            }
+            return true;
+        }
 
         return true;
     }

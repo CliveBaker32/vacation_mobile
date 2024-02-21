@@ -8,4 +8,7 @@
     <item android:title="Delete Product"
         android:id="@+id/productdelete"
         />
+    <item android:title="Set Alert"
+        android:id="@+id/setAlert"
+        />
 </menu>

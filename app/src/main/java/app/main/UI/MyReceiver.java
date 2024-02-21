@@ -21,14 +21,18 @@ public class MyReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context, intent.getStringExtra("key"), Toast.LENGTH_LONG).show();
-        createNotificationChannel(context, channel_id);
-        Notification n = new NotificationCompat.Builder(context, channel_id)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentText(intent.getStringExtra("key"))
-                .setContentTitle("NotifcationTest").build();
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(notificationID++, n);
+        String action = intent.getAction();
+        if (action != null && action.equals("START_DATE")) {
+            // Handle action for start date
+            handleDateAction(context, intent);
+        } else if (action != null && action.equals("END_DATE")) {
+            // Handle action for end date
+            handleDateAction(context, intent);
+        } else {
+            // Handle Excursion date notification action.
+            handleDateAction(context, intent);
+        }
+
     }
     // TODO: This method is called when the BroadcastReceiver is receiving
     // an Intent broadcast.
@@ -44,5 +48,20 @@ public class MyReceiver extends BroadcastReceiver {
         // or other notification behaviors after this
         NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
         notificationManager.createNotificationChannel(channel);
+    }
+
+    private void handleDateAction(Context context, Intent intent) {
+        // Handle action for dates
+        String message = intent.getStringExtra("key");
+        if (message != null) {
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+            createNotificationChannel(context, channel_id);
+            Notification n = new NotificationCompat.Builder(context, channel_id)
+                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                    .setContentText(message)
+                    .setContentTitle("Status Notification").build();
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.notify(notificationID++, n);
+        }
     }
 }
