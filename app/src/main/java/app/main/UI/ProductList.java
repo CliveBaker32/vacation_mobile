@@ -101,7 +101,7 @@ public class ProductList extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         productAdapter.setProducts(allProducts);
 
-        Toast.makeText(this,"Vacation list is refreshed. ProductList.java - onResume Method",Toast.LENGTH_LONG).show();
+        //Toast.makeText(this,"Vacation list is refreshed. ProductList.java - onResume Method",Toast.LENGTH_LONG).show();
     }
 
 }
