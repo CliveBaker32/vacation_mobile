@@ -23,17 +23,17 @@
         <activity
             android:name=".UI.PartDetails"
             android:exported="false"
-            android:label="Part Details"
+            android:label="Excursion Details"
             android:parentActivityName=".UI.ProductDetails" />
         <activity
             android:name=".UI.ProductDetails"
             android:exported="false"
-            android:label="Product Details "
+            android:label="Vacation Details "
             android:parentActivityName=".UI.ProductDetails" />
         <activity
             android:name=".UI.ProductList"
             android:exported="false"
-            android:label="Product List"
+            android:label="Vacation List"
             android:parentActivityName=".UI.MainActivity" />
         <activity
             android:name=".UI.MainActivity"

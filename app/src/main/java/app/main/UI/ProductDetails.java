@@ -110,7 +110,7 @@ public class ProductDetails extends AppCompatActivity {
                 repository.delete(currentProduct);
                 Toast.makeText(ProductDetails.this, currentProduct.getProductName() + " was deleted", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(ProductDetails.this, "Can't delete a product with parts", Toast.LENGTH_LONG).show();
+                Toast.makeText(ProductDetails.this, "Can't delete a Vacation with Excursions", Toast.LENGTH_LONG).show();
             }
             return true;
         }
