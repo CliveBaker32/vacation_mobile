@@ -64,11 +64,7 @@ public class PartDetails extends AppCompatActivity {
 
         ArrayList<Product> productArrayList= new ArrayList<>();
         productArrayList.addAll(repository.getmAllProducts());
-        ArrayList<Integer> productIdList= new ArrayList<>();
-        for(Product product:productArrayList){
-            productIdList.add(product.getProductID());
-        }
-        ArrayAdapter<Integer> productIdAdapter= new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item,productIdList);
+        ArrayAdapter<Product> productIdAdapter= new ArrayAdapter<Product>(this, android.R.layout.simple_spinner_item,productArrayList);
         Spinner spinner=findViewById(R.id.spinner);
         spinner.setAdapter(productIdAdapter);
 

@@ -28,9 +28,9 @@ public class ProductDetails extends AppCompatActivity {
     int productID;
     EditText editName;
     EditText editPrice;
-
     Repository repository;
-
+    Product currentProduct;
+    int numParts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +96,26 @@ public class ProductDetails extends AppCompatActivity {
                 }
             }
         }
+        if(item.getItemId()== R.id.productdelete) {
+            for (Product prod : repository.getmAllProducts()) {
+                if (prod.getProductID() == productID) currentProduct = prod;
+            }
+
+            numParts = 0;
+            for (Part part : repository.getAllParts()) {
+                if (part.getProductID() == productID) ++numParts;
+            }
+
+            if (numParts == 0) {
+                repository.delete(currentProduct);
+                Toast.makeText(ProductDetails.this, currentProduct.getProductName() + " was deleted", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(ProductDetails.this, "Can't delete a product with parts", Toast.LENGTH_LONG).show();
+            }
+            return true;
+        }
+
+
         return true;
     }
 
