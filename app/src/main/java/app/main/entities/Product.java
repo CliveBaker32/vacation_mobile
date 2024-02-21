@@ -10,12 +10,19 @@ public class Product {
     private int productID;
 
     private String productName;
-    private double price;
 
-    public Product(int productID, String productName, double price) {
+    private String hotel;
+    private String startDate;
+    private String endDate;
+
+
+
+    public Product(int productID, String productName, String hotel, String startDate, String endDate) {
         this.productID = productID;
         this.productName = productName;
-        this.price = price;
+        this.hotel = hotel;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public int getProductID() {
@@ -34,12 +41,28 @@ public class Product {
         this.productName = productName;
     }
 
-    public double getPrice() {
-        return price;
+    public String getHotel() {
+        return hotel;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setHotel(String hotel) {
+        this.hotel = hotel;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
     @Override

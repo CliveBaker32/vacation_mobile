@@ -64,29 +64,31 @@ public class ProductList extends AppCompatActivity {
             repository = new Repository(getApplication());
 
 //            Toast.makeText(ProductList.this, "put in sample data", Toast.LENGTH_LONG).show();
-            Product product = new Product(0, "Miami", 100.0);
+            Product product = new Product(0, "Miami", "Jane Resorts", "01/20/24", "01/28/24");
             repository.insert(product);
 
-            product = new Product(0, "Maine", 100.0);
+            product = new Product(0, "Maine", "Jane Resorts", "01/20/24", "01/28/24");
             repository.insert(product);
 
+/*
             Part part = new Part(0, "Boat Ride", 100.0, 1);
             repository.insert(part);
 
             part = new Part(0, "Snow-sledding", 100.0, 1);
             repository.insert(part);
+*/
 
 
             return true;
         }
-        if (item.getItemId() == android.R.id.home) {
+        /*if (item.getItemId() == android.R.id.home) {
             this.finish();
 
 //            Intent intent = new Intent(ProductList.this, ProductDetails.class);
 //            startActivity(intent);
 
             return true;
-        }
+        }*/
         return true;
     }
 

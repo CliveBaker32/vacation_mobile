@@ -24,13 +24,16 @@ import app.main.entities.Product;
 
 public class ProductDetails extends AppCompatActivity {
     String name;
-    double price;
     int productID;
-    EditText editName;
-    EditText editPrice;
     Repository repository;
     Product currentProduct;
     int numParts;
+
+    EditText editName;
+    EditText editHotel;
+    EditText editStartDate;
+    EditText editEndDate;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,14 +41,25 @@ public class ProductDetails extends AppCompatActivity {
         setContentView(R.layout.activity_product_details);
         FloatingActionButton fab = findViewById(R.id.floatingActionButton2);
 
-        editName = findViewById(R.id.titletext);
-        editPrice = findViewById(R.id.pricetext);
-
         name = getIntent().getStringExtra("name");
-        price = getIntent().getDoubleExtra("price", 0.0);
-
+        editName = findViewById(R.id.titletext);
         editName.setText(name);
-        editPrice.setText(Double.toString(price));
+
+        name = getIntent().getStringExtra("hotel");
+        editHotel = findViewById(R.id.hotelText);
+        editHotel.setText(name);
+
+        name = getIntent().getStringExtra("startDate");
+        editStartDate = findViewById(R.id.startDateText);
+        editStartDate.setText(name);
+
+
+        name = getIntent().getStringExtra("endDate");
+        editEndDate = findViewById(R.id.endDateText);
+        editEndDate.setText(name);
+
+
+
 
         productID = getIntent().getIntExtra("id", -1);
 
@@ -83,12 +97,12 @@ public class ProductDetails extends AppCompatActivity {
                 if (repository.getmAllProducts().size() == 0) productID = 1;
                 else
                     productID = repository.getmAllProducts().get(repository.getmAllProducts().size() - 1).getProductID() + 1;
-                product = new Product(productID, editName.getText().toString(), Double.parseDouble(editPrice.getText().toString()));
+                product = new Product(productID, editName.getText().toString(), editHotel.getText().toString(), editStartDate.getText().toString(), editEndDate.getText().toString());
                 repository.insert(product);
                 this.finish();
             } else {
                 try {
-                    product = new Product(productID, editName.getText().toString(), Double.parseDouble(editPrice.getText().toString()));
+                    product = new Product(productID, editName.getText().toString(), editHotel.getText().toString(), editStartDate.getText().toString(), editEndDate.getText().toString());
                     repository.update(product);
                     this.finish();
                 } catch (Exception e) {
@@ -110,7 +124,7 @@ public class ProductDetails extends AppCompatActivity {
                 repository.delete(currentProduct);
                 Toast.makeText(ProductDetails.this, currentProduct.getProductName() + " was deleted", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(ProductDetails.this, "Can't delete a Vacation with Excursions", Toast.LENGTH_LONG).show();
+                Toast.makeText(ProductDetails.this, "Can't delete a Vacation with Excursions.", Toast.LENGTH_LONG).show();
             }
             return true;
         }
