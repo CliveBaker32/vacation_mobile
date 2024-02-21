@@ -11,4 +11,8 @@
     <item android:title="Set Alert"
         android:id="@+id/setAlert"
         />
+
+    <item android:title="Share"
+        android:id="@+id/shareVacation"
+        />
 </menu>

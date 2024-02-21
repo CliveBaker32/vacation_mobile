@@ -246,6 +246,20 @@ public class ProductDetails extends AppCompatActivity {
             return true;
         }
 
+        if (item.getItemId()== R.id.shareVacation) {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "Title: " + editName.getText().toString() + "\n" + "Hotel: " + editHotel.getText().toString()
+                    + "\n" + "Start Date: " + editStartDate.getText().toString() + "\n" + "End Date: " + editEndDate.getText().toString());
+            sendIntent.putExtra(Intent.EXTRA_TITLE, "Share Vacation");
+            sendIntent.setType("text/plain");
+            Intent shareIntent = Intent.createChooser(sendIntent, null);
+            startActivity(shareIntent);
+            return true;
+        }
+
+
+
         return true;
     }
 
