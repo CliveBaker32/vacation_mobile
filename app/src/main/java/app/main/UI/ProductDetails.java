@@ -255,10 +255,16 @@ public class ProductDetails extends AppCompatActivity {
         }
 
         if (item.getItemId() == R.id.shareVacation) {
+            String allAssociatedParts = "";
+            for (Part part: repository.getAllAssociatedParts(productID)) {
+                allAssociatedParts = allAssociatedParts + "\n" + part.getPartName();
+            }
+
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT, "Title: " + editName.getText().toString() + "\n" + "Hotel: " + editHotel.getText().toString()
-                    + "\n" + "Start Date: " + editStartDate.getText().toString() + "\n" + "End Date: " + editEndDate.getText().toString());
+                    + "\n" + "Start Date: " + editStartDate.getText().toString() + "\n" + "End Date: " +
+                    editEndDate.getText().toString() + "\n" + "Excursions: " + allAssociatedParts);
             sendIntent.putExtra(Intent.EXTRA_TITLE, "Share Vacation");
             sendIntent.setType("text/plain");
             Intent shareIntent = Intent.createChooser(sendIntent, null);

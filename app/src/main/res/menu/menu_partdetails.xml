@@ -4,6 +4,9 @@
 
     <item android:title="Save Part"
         android:id="@+id/partsave"/>
+    <item android:title="Delete Part"
+        android:orderInCategory="100"
+        android:id="@+id/partDelete"/>
     <item android:title="Set Alert"
         android:orderInCategory="100"
         android:id="@+id/notify"/>

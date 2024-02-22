@@ -68,7 +68,9 @@ public class PartDetails extends AppCompatActivity {
         for (Product product: repository.getmAllProducts()) {
             if (product.getProductID() == prodID) {
                 curprod = product;
+                break;
             }
+
         }
         if (curprod != null) {
             vacStartDate = curprod.getStartDate();
@@ -84,6 +86,18 @@ public class PartDetails extends AppCompatActivity {
         ArrayAdapter<Product> productIdAdapter = new ArrayAdapter<Product>(this, android.R.layout.simple_spinner_item, productArrayList);
         Spinner spinner = findViewById(R.id.spinner);
         spinner.setAdapter(productIdAdapter);
+        int num = 0;
+        for (Product product: repository.getmAllProducts()) {
+            spinner.setSelection(num);
+            if (curprod == null) {
+                break;
+            }
+            if (spinner.getSelectedItem().toString().equals(curprod.getProductName()) ) {
+                break;
+            }
+            num++;
+        }
+
 
         startDate = new DatePickerDialog.OnDateSetListener() {
 
@@ -179,6 +193,18 @@ public class PartDetails extends AppCompatActivity {
             }
             return true;
         }
+
+
+        if (item.getItemId() == R.id.partDelete) {
+            for (Part part : repository.getAllAssociatedParts(prodID)) {
+                if (part.getPartID() == partID) {
+                    repository.delete(part);
+                    this.finish();
+                }
+            }
+            return true;
+        }
+
 
 
         if (item.getItemId() == R.id.notify) {
