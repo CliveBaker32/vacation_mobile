@@ -36,8 +36,8 @@ public class PartAdapter extends RecyclerView.Adapter<PartAdapter.PartViewHolder
                     Intent intent=new Intent(context,PartDetails.class);
                     intent.putExtra("id", current.getPartID());
                     intent.putExtra("name", current.getPartName());
-                    intent.putExtra("price", current.getPrice());
                     intent.putExtra("prodID",current.getProductID());
+                    intent.putExtra("excursionDate",current.getDate());
                     context.startActivity(intent);
                 }
             });

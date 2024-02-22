@@ -9,6 +9,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,7 +44,6 @@ public class ProductDetails extends AppCompatActivity {
     private static final Object lock = new Object();
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,8 +68,6 @@ public class ProductDetails extends AppCompatActivity {
         editEndDate.setText(name);
 
 
-
-
         productID = getIntent().getIntExtra("id", -1);
 
 
@@ -78,6 +76,8 @@ public class ProductDetails extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ProductDetails.this, PartDetails.class);
                 intent.putExtra("prodID", productID);
+
+
                 startActivity(intent);
             }
         });
@@ -100,23 +100,27 @@ public class ProductDetails extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(item.getItemId()== R.id.productsave) {
+        if (item.getItemId() == R.id.productsave) {
+            String regex = "^(0[1-9]|1[0-2])/(0[1-9]|[12]\\d|3[01])/\\d{2}$";
 
             // Check for correct date format and if end date is after the start date before saving anything.
             String myFormat = "MM/dd/yy"; //In which you need put here
             SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
             try {
+
                 // Parse the editEndDate and editStartDate strings using the specified format
                 sdf.setLenient(false); // Ensure strict parsing
-                Date endDate = sdf.parse(editEndDate.getText().toString());
                 Date startDate = sdf.parse(editStartDate.getText().toString());
+                Date endDate = sdf.parse(editEndDate.getText().toString());
 
-                // Format the parsed dates back to strings to check if they match the original input
-                String formattedEndDate = sdf.format(endDate);
-                String formattedStartDate = sdf.format(startDate);
 
                 // Check if the formatted dates match the original input
-                if (!formattedEndDate.equals(editEndDate.getText().toString()) || !formattedStartDate.equals(editStartDate.getText().toString())) {
+                if (!editStartDate.getText().toString().matches(regex)) {
+                    // Dates do not match the expected format
+                    // Show error message
+                    Toast.makeText(this, "Dates should be in the format MM/dd/yy.", Toast.LENGTH_SHORT).show();
+                    return true; // Exit the method without further processing
+                } else if (!editEndDate.getText().toString().matches(regex)) {
                     // Dates do not match the expected format
                     // Show error message
                     Toast.makeText(this, "Dates should be in the format MM/dd/yy.", Toast.LENGTH_SHORT).show();
@@ -126,6 +130,9 @@ public class ProductDetails extends AppCompatActivity {
                     return true; // Exit the method without further processing
                 }
             } catch (Exception e) {
+                Log.e("ERROR", "Exception occurred: " + e.getMessage(), e);
+                Toast.makeText(this, "Dates should be in the format MM/dd/yy.", Toast.LENGTH_SHORT).show();
+                return true;
 
             }
             // Now create the product or update it.
@@ -147,7 +154,7 @@ public class ProductDetails extends AppCompatActivity {
                 }
             }
         }
-        if(item.getItemId()== R.id.productdelete) {
+        if (item.getItemId() == R.id.productdelete) {
             for (Product prod : repository.getmAllProducts()) {
                 if (prod.getProductID() == productID) currentProduct = prod;
             }
@@ -167,24 +174,27 @@ public class ProductDetails extends AppCompatActivity {
         }
 
 
-        if(item.getItemId()== R.id.setAlert) {
+        if (item.getItemId() == R.id.setAlert) {
+            String regex = "^(0[1-9]|1[0-2])/(0[1-9]|[12]\\d|3[01])/\\d{2}$";
 
+            // Check for correct date format and if end date is after the start date before saving anything.
             String myFormat = "MM/dd/yy"; //In which you need put here
             SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
-            // Check if format is valid and end dat is after start date.
             try {
+
                 // Parse the editEndDate and editStartDate strings using the specified format
                 sdf.setLenient(false); // Ensure strict parsing
-                Date endDate = sdf.parse(editEndDate.getText().toString());
                 Date startDate = sdf.parse(editStartDate.getText().toString());
+                Date endDate = sdf.parse(editEndDate.getText().toString());
 
-                // Format the parsed dates back to strings to check if they match the original input
-                String formattedEndDate = sdf.format(endDate);
-                String formattedStartDate = sdf.format(startDate);
 
                 // Check if the formatted dates match the original input
-                if (!formattedEndDate.equals(editEndDate.getText().toString()) || !formattedStartDate.equals(editStartDate.getText().toString())) {
+                if (!editStartDate.getText().toString().matches(regex)) {
+                    // Dates do not match the expected format
+                    // Show error message
+                    Toast.makeText(this, "Dates should be in the format MM/dd/yy.", Toast.LENGTH_SHORT).show();
+                    return true; // Exit the method without further processing
+                } else if (!editEndDate.getText().toString().matches(regex)) {
                     // Dates do not match the expected format
                     // Show error message
                     Toast.makeText(this, "Dates should be in the format MM/dd/yy.", Toast.LENGTH_SHORT).show();
@@ -194,10 +204,10 @@ public class ProductDetails extends AppCompatActivity {
                     return true; // Exit the method without further processing
                 }
             } catch (Exception e) {
-                return true; // Exit the method without further processing if, a en error occurs.
+                Log.e("ERROR", "Exception occurred: " + e.getMessage(), e);
+                Toast.makeText(this, "Dates should be in the format MM/dd/yy.", Toast.LENGTH_SHORT).show();
+                return true;
             }
-
-
 
 
             String startDateFromScreen = editStartDate.getText().toString();
@@ -214,8 +224,6 @@ public class ProductDetails extends AppCompatActivity {
                 e.printStackTrace();
             }
             // Define an object to use as a lock
-
-// Then in your method:
             try {
                 // Synchronize on the lock object to ensure only one thread can execute this block at a time
                 synchronized (lock) {
@@ -246,7 +254,7 @@ public class ProductDetails extends AppCompatActivity {
             return true;
         }
 
-        if (item.getItemId()== R.id.shareVacation) {
+        if (item.getItemId() == R.id.shareVacation) {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT, "Title: " + editName.getText().toString() + "\n" + "Hotel: " + editHotel.getText().toString()
@@ -257,7 +265,6 @@ public class ProductDetails extends AppCompatActivity {
             startActivity(shareIntent);
             return true;
         }
-
 
 
         return true;
@@ -275,6 +282,30 @@ public class ProductDetails extends AppCompatActivity {
         partAdapter.setParts(repository.getAllAssociatedParts(productID));
 
         //Toast.makeText(ProductDetails.this,"refresh list",Toast.LENGTH_LONG).show();
+    }
+
+    public boolean excursionInDateRange(String excurDate) {
+        // Check for correct date format and if end date is after the start date before saving anything.
+        String myFormat = "MM/dd/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        try {
+            // Parse the editEndDate and editStartDate strings using the specified format
+            sdf.setLenient(false); // Ensure strict parsing
+            Date startDate = sdf.parse(editStartDate.getText().toString());
+            Date endDate = sdf.parse(editEndDate.getText().toString());
+            Date excursionDate = sdf.parse(excurDate);
+
+            if (startDate.after(excursionDate)) {
+                return false; // Exit the method without further processing
+
+            } else if (endDate.before(excursionDate)) {
+                return false; // Exit the method without further processing
+            }
+
+        } catch (ParseException e) {
+
+        }
+        return true;
     }
 
 }

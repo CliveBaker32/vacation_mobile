@@ -12,15 +12,17 @@ public class Part {
 
     private String partName;
 
-    private double price;
     private int productID;
 
-    public Part(int partID, String partName, double price, int productID) {
+    private String date;
+
+    public Part(int partID, String partName, int productID, String date) {
         this.partID = partID;
         this.partName = partName;
-        this.price = price;
         this.productID = productID;
+        this.date = date;
     }
+
 
     public int getPartID() {
         return partID;
@@ -38,13 +40,6 @@ public class Part {
         this.partName = partName;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
 
     public int getProductID() {
         return productID;
@@ -52,5 +47,13 @@ public class Part {
 
     public void setProductID(int productID) {
         this.productID = productID;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
