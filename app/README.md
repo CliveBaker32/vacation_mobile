@@ -3,6 +3,12 @@
 ## Purpose
 The application will allow students to enter, edit, and delete vacation and excursion data.
 
+## Link To git Repository
+https://gitlab.com/wgu-gitlab-environment/student-repos/cbak585/d308-mobile-application-development-android/-/tree/remake_branch?ref_type=heads
+
+## Android Version
+Version 8.0.0
+
 ## Directions
 
 ### B1 
